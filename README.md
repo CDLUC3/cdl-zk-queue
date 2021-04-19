@@ -4,7 +4,7 @@ This library is part of the [Merritt Preservation System](https://github.com/CDL
 
 ## Purpose
 
-This library provides utility classes for interacting with a Zookeeper queue.
+This library provides utility classes for interacting directly with a Zookeeper queue.
 
 ## Dependencies
 
