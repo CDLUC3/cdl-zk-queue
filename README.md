@@ -11,11 +11,6 @@ This library provides utility classes for interacting with a Zookeeper queue.
 This code depends on the following Merritt Libraries.
 - [Merritt Core Library](https://github.com/CDLUC3/mrt-core2)
 
-## Dependencies
-
-This code depends on the following Merritt Libraries.
-- [Merritt Core Library](https://github.com/CDLUC3/mrt-core2)
-
 ## Used By
 
 This code is used by
