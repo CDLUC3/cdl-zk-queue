@@ -259,6 +259,11 @@ public class DistributedQueue {
         return updateStatus(id, Item.CONSUMED, Item.COMPLETED);
     }
 
+    public Item fail(String id)
+        throws KeeperException, InterruptedException {
+        return updateStatus(id, Item.CONSUMED, Item.FAILED);
+    }
+
     public Item requeue(String id)
         throws KeeperException, InterruptedException {
         return updateStatus(id, Item.CONSUMED, Item.PENDING);
