@@ -15,6 +15,18 @@
     <merritt-core.version>1.0-SNAPSHOT</merritt-core.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2/</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+    </releases>
+    <snapshots>
+        <updatePolicy>never</updatePolicy>
+    </snapshots>
+    </repository>
+  </repositories>
   <scm>
     <connection>scm:hg:http://hg.cdlib.org/egh-cdl-zk-queue</connection>
   </scm>
