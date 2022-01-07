@@ -15,19 +15,6 @@
     <merritt-core.version>1.0-SNAPSHOT</merritt-core.version>
   </properties>
 
-  <distributionManagement>
-    <repository>
-      <id>cdl-releases</id>
-      <name>CDL Snapshot Repository</name>
-      <url>http://mvn.cdlib.org/content/repositories/cdl-releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>cdl-snapshots</id>
-      <name>CDL Snapshot Repository</name>
-      <url>http://mvn.cdlib.org/content/repositories/cdl-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <scm>
     <connection>scm:hg:http://hg.cdlib.org/egh-cdl-zk-queue</connection>
   </scm>
@@ -105,4 +92,3 @@
     </plugins>
   </build>
 </project>
-
