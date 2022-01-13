@@ -51,19 +51,19 @@ public class DistributedLock {
 
     private ZooKeeper zookeeper;
     private List<ACL> acl = ZooDefs.Ids.OPEN_ACL_UNSAFE;
-    public final String dir;
+    private String node;
     private String name;
 
-    public DistributedLock(ZooKeeper zookeeper, String dir, String path, List<ACL> acl){
-        this.dir = dir;
-        this.name = String.format("%s/%s", this.dir, path);
+    public DistributedLock(ZooKeeper zookeeper, String node, String path, List<ACL> acl){
+        this.node = node;
+        this.name = String.format("%s/%s", node, path);
 
         if(acl != null){
             this.acl = acl;
         }
         this.zookeeper = zookeeper;
     }
-    
+
     /**
      * Extracts the item id from a path.
      * @return item id
@@ -82,12 +82,13 @@ public class DistributedLock {
                                  acl, CreateMode.EPHEMERAL);
                 return true;
             } catch (KeeperException.NodeExistsException nee) {
-                System.err.println("[error] DistributedLock.submit() node exists: " + nee.getMessage());
+                System.err.println("[error] DistributedLock node exists: " + this.name);
 		// exists
                 return false;
             } catch (KeeperException.NoNodeException nne){
-                System.err.println("[error] DistributedLock.submit() node does not exist: " + nne.getMessage());
-                zookeeper.create(dir, new byte[0], acl, CreateMode.PERSISTENT);
+                System.err.println("[error] DistributedLock node does not exist: " + nne.getMessage());
+                System.out.println("[info] DistributedLock creating node: " + this.node);
+                zookeeper.create(this.node, new byte[0], acl, CreateMode.PERSISTENT);
             } catch (ConnectionLossException cle) {
 		// did submit fail?
 		if (attempts >= 3) throw new ConnectionLossException();  
@@ -115,7 +116,7 @@ public class DistributedLock {
         int attempts = 0;
         while (true) {
             try{
-                childNames = zookeeper.getChildren(dir, watcher);
+                childNames = zookeeper.getChildren(node, watcher);
 		break;
             } catch (ConnectionLossException cle) {
                 System.out.println("[info] DistributedLock.orderedChildren() lost connection." + cle.getMessage());
@@ -150,6 +151,7 @@ public class DistributedLock {
 	// probably not needed - ephemeral nodes
         try {
             Stat stat = zookeeper.exists(this.name, null);
+	    if (stat == null) return;
             int version = stat.getVersion();
 	    System.out.println("Cleanup version: " + version);
             zookeeper.delete(this.name, version);
@@ -197,7 +199,7 @@ public class DistributedLock {
                     throw new NoSuchElementException();
                 }
                 for (String headNode : orderedChildren.values()) {
-                    String pathname = String.format("%s/%s", l.dir, headNode);
+                    String pathname = String.format("%s/%s", l.node, headNode);
                     try {
                         byte[] datab = zk.getData(pathname, false, null);
 			String datas = new String(datab);
