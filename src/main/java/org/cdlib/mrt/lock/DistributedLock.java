@@ -51,7 +51,7 @@ public class DistributedLock {
 
     private ZooKeeper zookeeper;
     private List<ACL> acl = ZooDefs.Ids.OPEN_ACL_UNSAFE;
-    private String node;
+    public final String node;
     private String name;
 
     public DistributedLock(ZooKeeper zookeeper, String node, String path, List<ACL> acl){
@@ -78,7 +78,8 @@ public class DistributedLock {
 	String node = null;
         while (true) {
             try {
-                node = zookeeper.create(this.name, data.getBytes(), 
+		LockItem i = new LockItem(data, new Date());
+                node = zookeeper.create(this.name, i.getBytes(), 
                                  acl, CreateMode.EPHEMERAL);
                 return true;
             } catch (KeeperException.NodeExistsException nee) {
