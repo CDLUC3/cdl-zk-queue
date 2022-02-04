@@ -116,12 +116,18 @@ public class DistributedLock {
         List<String> childNames = null;
         int attempts = 0;
         while (true) {
-            try{
+            try {
                 childNames = zookeeper.getChildren(node, watcher);
 		break;
             } catch (ConnectionLossException cle) {
-                System.out.println("[info] DistributedLock.orderedChildren() lost connection." + cle.getMessage());
+                if (attempts >= 3) throw new ConnectionLossException();
+                if (childNames == null) {
+                    System.err.println("[error] DistributedQueue.orderedChildren() lost connection, retrying: " + cle.getMessage());
+                    attempts++;
+                } else {
+                    System.out.println("[info] DistributedQueue.orderedChildren() lost connection, but no need to retry.");
                     break;
+                }
             } catch (KeeperException.NoNodeException e) {
                 throw e;
             }
