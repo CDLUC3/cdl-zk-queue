@@ -122,10 +122,10 @@ public class DistributedLock {
             } catch (ConnectionLossException cle) {
                 if (attempts >= 3) throw new ConnectionLossException();
                 if (childNames == null) {
-                    System.err.println("[error] DistributedQueue.orderedChildren() lost connection, retrying: " + cle.getMessage());
+                    System.err.println("[error] DistributedLock.orderedChildren() lost connection, retrying: " + cle.getMessage());
                     attempts++;
                 } else {
-                    System.out.println("[info] DistributedQueue.orderedChildren() lost connection, but no need to retry.");
+                    System.out.println("[info] DistributedLock.orderedChildren() lost connection, but no need to retry.");
                     break;
                 }
             } catch (KeeperException.NoNodeException e) {
