@@ -166,7 +166,11 @@ public class DistributedLock {
 	    System.err.println("Error during cleanup: " + ex.getMessage());
         } catch (NoSuchElementException ex) {
 	    System.err.println("Error during cleanup: " + ex.getMessage());
-        }
+        } finally {
+	    System.out.println("Cleaning up zookeeper lock.");
+	    zookeeper.close();
+	    zookeeper = null;
+	}
     }
         
     public static class Ignorer implements Watcher {
