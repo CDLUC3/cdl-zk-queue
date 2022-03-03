@@ -41,15 +41,12 @@
     </snapshots>
     </repository>
   </repositories>
-  <scm>
-    <connection>scm:hg:http://hg.cdlib.org/egh-cdl-zk-queue</connection>
-  </scm>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
       <artifactId>zookeeper</artifactId>
-      <version>3.4.3</version>
+      <version>3.5.5</version>
       <exclusions>
         <exclusion>
           <groupId>javax.jms</groupId>
