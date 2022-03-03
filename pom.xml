@@ -15,28 +15,38 @@
     <merritt-core.version>1.0-SNAPSHOT</merritt-core.version>
   </properties>
 
-  <distributionManagement>
+  <pluginRepositories>
+    <pluginRepository>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+        <layout>default</layout>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <releases>
+            <updatePolicy>never</updatePolicy>
+        </releases>
+    </pluginRepository>
+  </pluginRepositories>
+  <repositories>
     <repository>
-      <id>cdl-releases</id>
-      <name>CDL Snapshot Repository</name>
-      <url>http://mvn.cdlib.org/content/repositories/cdl-releases/</url>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2/</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+    </releases>
+    <snapshots>
+        <updatePolicy>never</updatePolicy>
+    </snapshots>
     </repository>
-    <snapshotRepository>
-      <id>cdl-snapshots</id>
-      <name>CDL Snapshot Repository</name>
-      <url>http://mvn.cdlib.org/content/repositories/cdl-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-
-  <scm>
-    <connection>scm:hg:http://hg.cdlib.org/egh-cdl-zk-queue</connection>
-  </scm>
+  </repositories>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
       <artifactId>zookeeper</artifactId>
-      <version>3.4.3</version>
+      <version>3.5.5</version>
       <exclusions>
         <exclusion>
           <groupId>javax.jms</groupId>
@@ -105,4 +115,3 @@
     </plugins>
   </build>
 </project>
-
