@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>org.cdlib.mrt</groupId>
   <artifactId>cdl-zk-queue</artifactId>
   <version>0.2-SNAPSHOT</version>
 
   <properties>
-    <!-- try to make maven quiet -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- skip tests by default, because they depend on a running ZK instance -->
     <skipTests>true</skipTests>
@@ -17,18 +16,19 @@
 
   <pluginRepositories>
     <pluginRepository>
-        <id>central</id>
-        <name>Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2</url>
-        <layout>default</layout>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <releases>
-            <updatePolicy>never</updatePolicy>
-        </releases>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
     </pluginRepository>
   </pluginRepositories>
+
   <repositories>
     <repository>
       <id>central</id>
@@ -37,48 +37,11 @@
         <updatePolicy>never</updatePolicy>
     </releases>
     <snapshots>
-        <updatePolicy>never</updatePolicy>
+      <updatePolicy>never</updatePolicy>
     </snapshots>
     </repository>
   </repositories>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.zookeeper</groupId>
-      <artifactId>zookeeper</artifactId>
-      <version>3.5.5</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.jms</groupId>
-          <artifactId>jms</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.mail</groupId>
-          <artifactId>mail</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jdmk</groupId>
-          <artifactId>jmxtools</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.sun.jmx</groupId>
-          <artifactId>jmxri</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>6.0.1</version>
-      <scope>test</scope>
-    </dependency>
-      <dependency>
-          <groupId>org.cdlib.mrt</groupId>
-          <artifactId>mrt-core</artifactId>
-          <version>2.0-SNAPSHOT</version>
-      </dependency>
-  </dependencies>
-  
   <build>
     <pluginManagement>
       <plugins>
@@ -114,4 +77,46 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+    <!-- Internal dependencies -->
+    <dependency>
+      <groupId>org.cdlib.mrt</groupId>
+      <artifactId>mrt-core</artifactId>
+      <version>2.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- 3rd party dependencies -->
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>3.5.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.jms</groupId>
+          <artifactId>jms</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.mail</groupId>
+          <artifactId>mail</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jdmk</groupId>
+          <artifactId>jmxtools</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jmx</groupId>
+          <artifactId>jmxri</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.0.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
 </project>
