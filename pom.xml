@@ -79,14 +79,6 @@
   </build>
 
   <dependencies>
-    <!-- Internal dependencies -->
-    <dependency>
-      <groupId>org.cdlib.mrt</groupId>
-      <artifactId>mrt-core</artifactId>
-      <version>2.0-SNAPSHOT</version>
-    </dependency>
-
-    <!-- 3rd party dependencies -->
     <dependency>
       <groupId>org.apache.zookeeper</groupId>
       <artifactId>zookeeper</artifactId>
@@ -109,6 +101,12 @@
           <artifactId>jmxri</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.cdlib.mrt</groupId>
+      <artifactId>mrt-core</artifactId>
+      <version>2.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
