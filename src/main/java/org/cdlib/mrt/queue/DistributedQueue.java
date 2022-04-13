@@ -304,6 +304,11 @@ public class DistributedQueue {
         return updateStatus(id, Item.CONSUMED, Item.HELD);
     }
 
+    public Item release(String id)
+        throws KeeperException, InterruptedException {
+        return updateStatus(id, Item.HELD, Item.PENDING);
+    }
+
     // put this back in queue, at the end
     public boolean requeue(Item item)
         throws KeeperException, InterruptedException {
