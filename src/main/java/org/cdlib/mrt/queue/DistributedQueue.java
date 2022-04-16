@@ -301,7 +301,7 @@ public class DistributedQueue {
 
     public Item hold(String id)
         throws KeeperException, InterruptedException {
-        return updateStatus(id, Item.CONSUMED, Item.HELD);
+        return updateStatus(id, Item.PENDING, Item.HELD);
     }
 
     public Item release(String id)
