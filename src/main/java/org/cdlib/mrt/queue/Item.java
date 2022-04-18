@@ -18,6 +18,7 @@ public class Item {
     public static byte DELETED  = (byte) 2;
     public static byte FAILED   = (byte) 3;
     public static byte COMPLETED= (byte) 4;
+    public static byte HELD     = (byte) 5;
 
     private Date timestamp;
     private byte status;
@@ -78,6 +79,8 @@ public class Item {
             statusStr = "completed";
         } else if (this.status == Item.FAILED) {
             statusStr = "failed";
+        } else if (this.status == Item.HELD) {
+            statusStr = "held";
         } else {
             statusStr = "error in status retrieval";
         }

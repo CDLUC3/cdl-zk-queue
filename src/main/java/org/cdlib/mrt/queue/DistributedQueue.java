@@ -269,6 +269,11 @@ public class DistributedQueue {
         return updateStatus(id, Item.PENDING, Item.DELETED);
     }
 
+    public Item deleteh(String id)
+        throws KeeperException, InterruptedException {
+        return updateStatus(id, Item.HELD, Item.DELETED);
+    }
+
     public Item complete(String id)
         throws KeeperException, InterruptedException {
         return updateStatus(id, Item.CONSUMED, Item.COMPLETED);
@@ -292,6 +297,16 @@ public class DistributedQueue {
     public Item requeuef(String id)
         throws KeeperException, InterruptedException {
         return updateStatus(id, Item.FAILED, Item.PENDING);
+    }
+
+    public Item hold(String id)
+        throws KeeperException, InterruptedException {
+        return updateStatus(id, Item.PENDING, Item.HELD);
+    }
+
+    public Item release(String id)
+        throws KeeperException, InterruptedException {
+        return updateStatus(id, Item.HELD, Item.PENDING);
     }
 
     // put this back in queue, at the end
