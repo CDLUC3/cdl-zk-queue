@@ -44,7 +44,7 @@ public class DistributedToken {
     public final String node;
 
     public DistributedToken(String zooConnectString, String node, List<ACL> acl)
-         throws IOException
+         throws IOException, KeeperException, InterruptedException
     {
         this.node = node;
 
@@ -52,6 +52,7 @@ public class DistributedToken {
             this.acl = acl;
         }
         this.zookeeper = new ZooKeeper(zooConnectString, DistributedToken.sessionTimeout, new Ignorer());
+        this.zookeeper.exists("/", null);
     }
 
     /**
@@ -297,6 +298,10 @@ public class DistributedToken {
         } catch(Exception e){
             return null;
         }
+    }
+
+    public ZooKeeper getZookeeper() {
+        return zookeeper;
     }
         
     public static class Ignorer implements Watcher {
