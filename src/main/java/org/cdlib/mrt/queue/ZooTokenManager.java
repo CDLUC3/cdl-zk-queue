@@ -35,6 +35,7 @@ import org.cdlib.mrt.queue.LockItem;
 import org.cdlib.mrt.queue.DistributedToken;
 
 import org.cdlib.mrt.utility.LoggerInf;
+import org.cdlib.mrt.utility.StringUtil;
 import org.cdlib.mrt.utility.TException;
 
 
@@ -124,7 +125,39 @@ public class ZooTokenManager
         if (verifyLock(tokenName)) {
             return true;
         }
+        boolean lvlLock = addIntermediateLevel(tokenName);
+        if (!lvlLock) return false;
         return distributedToken.add(tokenName, payload);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Create intemediate znodes that are missing
+     * @param tokenName name of toke with intermediate levels
+     * @return true=intermediate znodes exist; false=one or more intermediate znodes do not exist;
+     */
+    protected boolean addIntermediateLevel(String tokenName) {
+        String lvl = "";
+        if (StringUtil.isAllBlank(tokenName)) return false;
+        try {
+            String[] levelNames=tokenName.split("/");
+            if (levelNames.length == 1) return true;
+            int occ = levelNames.length - 1;
+            for (int i=0; i < occ; i++) {
+                String levelName = levelNames[i];
+                if (lvl.length() > 0) {
+                    lvl += "/";
+                }
+                lvl += levelName;
+                if (verifyLock(lvl)) continue;
+                distributedToken.add(lvl, lvl);
+                System.out.println("Add intermediate level:" + lvl);
+            }
+            return distributedToken.verify(lvl);
 
         } catch (Exception e) {
             e.printStackTrace();
