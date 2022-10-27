@@ -119,34 +119,35 @@ public class DistributedToken {
             throws KeeperException, InterruptedException, ConnectionLossException
     {
         if (exists(tokenName)) return true;
-	int attempts = 0;
+        if (!addNode()) return false;
+        
 	String responseNode = null;
         String name = node + "/" + tokenName;
        
-            try {
-                if (DEBUG) System.out.println("submit name=" + name);
-		LockItem i = new LockItem(data, new Date());
-                responseNode = zookeeper.create(name, 
-                                i.getBytes(), 
-                                 acl, 
-                                 CreateMode.PERSISTENT);
-                                 //CreateMode.EPHEMERAL);
-                if (DEBUG) System.out.println("responseNode=" + responseNode);
-                return true;
-                
-            } catch (KeeperException.NodeExistsException nee) {
-                System.err.println("[error] DistributedLock node exists: " + name);
-		// exists
-                return true;
-                
-            } catch (KeeperException.NoNodeException nne){
-                System.err.println("[error] DistributedLock node does not exist: " + nne.getMessage());
-                System.out.println("[info] DistributedLock creating node: " + this.node);
-                return false;
-                
-            } catch (ConnectionLossException cle) {
-		throw cle;
-            }
+        try {
+            if (DEBUG) System.out.println("submit name=" + name);
+            LockItem i = new LockItem(data, new Date());
+            responseNode = zookeeper.create(name, 
+                            i.getBytes(), 
+                             acl, 
+                             CreateMode.PERSISTENT);
+                             //CreateMode.EPHEMERAL);
+            if (DEBUG) System.out.println("responseNode=" + responseNode);
+            return true;
+
+        } catch (KeeperException.NodeExistsException nee) {
+            System.err.println("[error] DistributedLock node exists: " + name);
+            // exists
+            return true;
+
+        } catch (KeeperException.NoNodeException nne){
+            System.err.println("[error] DistributedLock node does not exist: " + nne.getMessage());
+            System.out.println("[info] DistributedLock creating node: " + this.node);
+            return false;
+
+        } catch (ConnectionLossException cle) {
+            throw cle;
+        }
         
     }
 
@@ -216,6 +217,31 @@ public class DistributedToken {
             //int version = stat.getVersion();
 	    //System.out.println("Cleanup version: " + version);
             return true;
+        } catch (KeeperException.BadVersionException ex) {
+	    System.err.println("Error during cleanup: " + ex.getMessage());
+            return false;
+        } catch (NoSuchElementException ex) {
+	    System.err.println("Error during cleanup: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    protected boolean addNode() throws KeeperException, InterruptedException {
+	// probably not needed - ephemeral nodes
+        try {
+            Stat stat = zookeeper.exists(node, null);
+	    if (stat != null) return true;
+            LockItem i = new LockItem(node, new Date());
+            String responseNode = zookeeper.create(node, 
+                            i.getBytes(), 
+                             acl, 
+                             CreateMode.PERSISTENT);
+                             //CreateMode.EPHEMERAL);
+            System.out.println("BaseNode added:"
+                    + " - node=" + node
+                    + " - responseNode=" + responseNode);
+            return true;
+            
         } catch (KeeperException.BadVersionException ex) {
 	    System.err.println("Error during cleanup: " + ex.getMessage());
             return false;
