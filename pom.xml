@@ -25,7 +25,7 @@
     <!-- try to make maven quiet -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- skip tests by default, because they depend on a running ZK instance -->
-    <skipTests>${env.SKIP_DOCKER_TEST}</skipTests>
+    <skipTests>true</skipTests>
     <merritt-core.version>1.0-SNAPSHOT</merritt-core.version>
   </properties>
 
