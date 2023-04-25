@@ -27,7 +27,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.Date;
 import java.net.ConnectException;
 import java.io.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -47,7 +48,7 @@ import org.apache.zookeeper.KeeperException.ConnectionLossException;
  */
 
 public class DistributedQueue {
-    private static final Logger LOG = Logger.getLogger(DistributedQueue.class);
+    private static final Logger LOG = LogManager.getLogger(DistributedQueue.class);
     public static int sessionTimeout =    40000;      // default max 20*tick 
 
     public final String dir;

@@ -13,7 +13,8 @@ import java.util.TreeMap;
 import java.util.Date;
 import java.net.ConnectException;
 import java.io.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -35,7 +36,7 @@ import org.cdlib.mrt.utility.StringUtil;
  */
 
 public class DistributedToken {
-    private static final Logger LOG = Logger.getLogger(DistributedToken.class);
+    private static final Logger LOG = LogManager.getLogger(DistributedToken.class);
     public static int sessionTimeout =    40000;      // default max 20*tick 
     private static boolean DEBUG = false;
 
