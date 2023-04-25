@@ -26,7 +26,9 @@ import java.util.TreeMap;
 import java.util.Date;
 import java.net.ConnectException;
 import java.io.*;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -46,7 +48,7 @@ import org.apache.zookeeper.KeeperException.NodeExistsException;
  */
 
 public class DistributedLock {
-    private static final Logger LOG = Logger.getLogger(DistributedLock.class);
+    private static final Logger LOG = LogManager.getLogger(DistributedLock.class);
     public static int sessionTimeout =    40000;      // default max 20*tick 
 
     private ZooKeeper zookeeper;
