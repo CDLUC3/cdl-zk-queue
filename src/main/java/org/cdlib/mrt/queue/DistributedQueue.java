@@ -407,7 +407,7 @@ public class DistributedQueue {
 	try {
             // e.g. mrtQ-051000212177 where priority is 05 followed by 1 HP boolean
             isHighPriority = "1".equals(id.substring(7,8));
-	    System.out.println("Job id: " + id + " has a high priority status of: " + isHighPriority);
+	    // System.out.println("Job id: " + id + " has a high priority status of: " + isHighPriority);
         } catch (Exception e){
 	    e.printStackTrace();
 	    return false;
