@@ -210,10 +210,34 @@ public class DistributedQueue {
                     } else {
                         throw new Next();
                     }
-               // } catch (ConnectException ce) {
-                    // server down
-                    //ce.printStackTrace(System.err);
-                    //System.out.println("------------------ ZOOKEEPER DOWN --------");
+                } catch (KeeperException.BadVersionException ex) {
+                    // Somebody got here first, next!
+                    throw new Next();
+                }
+            }
+        };
+
+        return handler.doit(false);
+    }
+
+    public Item consumeHighPriority() 
+        throws KeeperException, InterruptedException {
+        Handler<Item> handler = new Handler<Item>() {
+            public Item handle (String path, byte[] data, Stat stat) 
+            throws Next, KeeperException, InterruptedException {
+                try {
+                    if (data[0] == Item.PENDING) {
+                        Item item = Item.fromBytes(data);
+			if (! isHighPriority(path.substring(dir.length() + 1)))
+				throw new Next();
+                        int version = stat.getVersion();
+                        Item newItem = new Item(Item.CONSUMED, item.getData(), 
+                                                new Date(), extractId(path));
+                        zookeeper.setData(path, newItem.getBytes(), version);
+                        return newItem;
+                    } else {
+                        throw new Next();
+                    }
                 } catch (KeeperException.BadVersionException ex) {
                     // Somebody got here first, next!
                     throw new Next();
@@ -376,6 +400,20 @@ public class DistributedQueue {
             }
         }
     }
+
+    public boolean isHighPriority(String id) {
+        boolean isHighPriority = false;
+
+	try {
+            // e.g. mrtQ-051000212177 where priority is 05 followed by 1 HP boolean
+            isHighPriority = "1".equals(id.substring(7,8));
+	    // System.out.println("Job id: " + id + " has a high priority status of: " + isHighPriority);
+        } catch (Exception e){
+	    e.printStackTrace();
+	    return false;
+        }
+        return isHighPriority;
+    } 
 
     public void cleanup(final byte status) 
         throws KeeperException, InterruptedException {
