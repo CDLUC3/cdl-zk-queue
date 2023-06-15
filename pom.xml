@@ -19,11 +19,16 @@
         <scope>import</scope>
       </dependency>
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> 
+     
+  <parent>
+    <groupId>org.cdlib.mrt</groupId>
+    <artifactId>mrt-parent-properties</artifactId>
+    <version>1.0.0</version>
+  </parent>
 
   <properties>
     <!-- try to make maven quiet -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- skip tests by default, because they depend on a running ZK instance -->
     <skipTests>true</skipTests>
     <merritt-core.version>1.0-SNAPSHOT</merritt-core.version>
@@ -116,12 +121,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2-beta-5</version>
+          <version>${maven.assembly.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>${maven.compiler.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -129,7 +134,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <skipTests>${skipTests}</skipTests>
         </configuration>
@@ -137,10 +142,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+            <source>${maven.compiler.plugin.java}</source>
+            <target>${maven.compiler.plugin.java}</target>
         </configuration>
       </plugin>
     </plugins>
