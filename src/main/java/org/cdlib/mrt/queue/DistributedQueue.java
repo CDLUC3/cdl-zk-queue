@@ -194,6 +194,7 @@ public class DistributedQueue {
         return handler.doit(false);
     }
 
+/*
     public Item consume() 
         throws KeeperException, InterruptedException {
         Handler<Item> handler = new Handler<Item>() {
@@ -219,8 +220,19 @@ public class DistributedQueue {
 
         return handler.doit(false);
     }
+*/
 
-    public Item consumeHighPriority() 
+    public Item consume()
+        throws KeeperException, InterruptedException {
+	    return consume("0", false);
+    }
+
+    public Item consumeHighPriority()
+        throws KeeperException, InterruptedException {
+	    return consume("0", true);
+    }
+
+    public Item consume(String worker, boolean checkHighPriority) 
         throws KeeperException, InterruptedException {
         Handler<Item> handler = new Handler<Item>() {
             public Item handle (String path, byte[] data, Stat stat) 
@@ -228,8 +240,16 @@ public class DistributedQueue {
                 try {
                     if (data[0] == Item.PENDING) {
                         Item item = Item.fromBytes(data);
-			if (! isHighPriority(path.substring(dir.length() + 1)))
+			// Do we check for high priority?
+			if (checkHighPriority) {
+			     if (! isHighPriority(path.substring(dir.length() + 1)))
 				throw new Next();
+			}
+			// Do we check for worker?
+			//if (worker != null) {
+			     if (! doesWorkerMatch(worker, path.substring(dir.length() + 1)))
+				throw new Next();
+			//}
                         int version = stat.getVersion();
                         Item newItem = new Item(Item.CONSUMED, item.getData(), 
                                                 new Date(), extractId(path));
@@ -413,6 +433,24 @@ public class DistributedQueue {
 	    return false;
         }
         return isHighPriority;
+    } 
+
+    public boolean doesWorkerMatch(String worker, String id) {
+        boolean doesWorkerMatch = false;
+
+	try {
+            // e.g. mrtQ-051300212177 
+	    //    - priority is 05
+	    //    - high priority boolean is 1
+	    //    - worker is 3
+            doesWorkerMatch = worker.equals(id.substring(8,9));
+	    System.out.println("ID: " + id);
+	    System.out.println("Worker: " + worker + " has a worker status of: " + doesWorkerMatch);
+        } catch (Exception e){
+	    e.printStackTrace();
+	    return false;
+        }
+        return doesWorkerMatch;
     } 
 
     public void cleanup(final byte status) 
