@@ -444,8 +444,6 @@ public class DistributedQueue {
 	    //    - high priority boolean is 1
 	    //    - worker is 3
             doesWorkerMatch = worker.equals(id.substring(8,9));
-	    System.out.println("ID: " + id);
-	    System.out.println("Worker: " + worker + " has a worker status of: " + doesWorkerMatch);
         } catch (Exception e){
 	    e.printStackTrace();
 	    return false;
