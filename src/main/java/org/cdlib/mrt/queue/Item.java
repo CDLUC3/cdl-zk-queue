@@ -67,7 +67,7 @@ public class Item {
         }
     }
     
-    public String toString () {
+    public String getStatusStr() {
         String statusStr;
         if (this.status == Item.PENDING) {
             statusStr = "pending";
@@ -84,6 +84,11 @@ public class Item {
         } else {
             statusStr = "error in status retrieval";
         }
+	return statusStr;
+    }
+
+    public String toString () {
+        String statusStr = getStatusStr();
         
         ByteArrayInputStream bis = null;
         ObjectInputStream ois = null;
